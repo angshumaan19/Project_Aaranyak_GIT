@@ -1,0 +1,62 @@
+
+
+import pygame
+
+def main():
+    pygame.init()
+
+
+    screen_width,screen_height = 500,400
+    screen = pygame.display.set_mode((screen_width,screen_height))
+    pygame.display.set_caption("moving sprite")
+
+    x, y = 30,30
+    sprite_height,sprite_width = 60,60
+    speed = 4
+
+    colors = {
+        "Red":(255,0,0),
+        "Blue":(0,0,255),
+        "Yellow":(255,255,0),
+        "Green":(0,255,0),
+        "Black":(0,0,0),
+        "White":(255,255,255)
+    }
+
+    current_color = colors["Red"]
+    clock = pygame.time.Clock()
+    done = True
+    while done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = False
+
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_LEFT] : x-=speed
+        if pressed[pygame.K_RIGHT] : x+=speed
+        if pressed[pygame.K_UP] : y-=speed
+        if pressed[pygame.K_DOWN] : y+=speed
+
+        x = min(max(0, x), screen_width - sprite_width)
+        y = min(max(0, y), screen_height - sprite_height)
+        if x == 0: current_color = colors["Yellow"]
+        elif x == screen_width - sprite_width: current_color = colors["Blue"]
+        elif y == 0: current_color = colors["Green"]
+        elif y == screen_height - sprite_height:current_color = colors["White"]
+        else: current_color = colors["Red"] 
+
+        screen.fill(colors["Black"])
+
+        pygame.draw.circle(screen, colors["Green"], (420, 320), 35)
+        pygame.draw.circle(screen, colors["Blue"], (80, 320), 35, 4)
+
+        sprite_rect = pygame.Rect(x, y, sprite_width, sprite_height)
+        pygame.draw.rect(screen,current_color,sprite_rect)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit
+
+if __name__ == "__main__":
+    main()
